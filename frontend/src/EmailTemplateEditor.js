@@ -1,10 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 
+const maliciousLinks = {
+  "Fake Login Page": "http://localhost:8000/fake_login",
+  "Download Fake PDF": "http://localhost:8000/download/fake.pdf",
+  "Update Payment Info": "http://localhost:8000/update_payment",
+  "View Secure Message": "http://localhost:8000/view_message",
+};
+
 function EmailTemplateEditor({ onTemplateUpdate }) {
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
   const [saved, setSaved] = useState(false);
+  const [selectedLink, setSelectedLink] = useState('');
+
+  const handleInsertLink = () => {
+    if (selectedLink) {
+      setBody(prev => prev + `<p><a href="${selectedLink}" target="_blank">${selectedLink}</a></p>`);
+    }
+  };
 
   const handleSave = async () => {
   console.log("Saving template...", { subject, body });
@@ -42,37 +56,54 @@ function EmailTemplateEditor({ onTemplateUpdate }) {
   }, []);
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>Email Template Editor</h2>
+  <div style={{ padding: '1rem' }}>
+    <h2>Email Template Editor</h2>
 
-      <div>
-        <label><strong>Subject:</strong></label>
-        <input
-          type="text"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          style={{ width: '100%', padding: '8px', marginBottom: '1rem' }}
-        />
-      </div>
-
-      <div>
-        <label><strong>Email Body:</strong></label>
-        <ReactQuill value={body} onChange={setBody} style={{ height: '200px', marginBottom: '1rem' }} />
-      </div>
-
-      {saved && <span style={{ marginLeft: '1rem', color: 'green' }}>✓ Template Saved!</span>}
-     
-      <hr />
-      <h3>📧 Preview</h3>
-      <h4><strong>{subject}</strong></h4>
-      <div dangerouslySetInnerHTML={{ __html: body }} />
-
-      <button onClick={handleSave}>Save Template</button>
+    <div>
+      <label><strong>Subject:</strong></label>
+      <input
+        type="text"
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        style={{ width: '100%', padding: '8px', marginBottom: '1rem' }}
+      />
     </div>
-      
-    
 
-  );
+    <div>
+      <label><strong>Email Body:</strong></label>
+      <ReactQuill value={body} onChange={setBody} style={{ height: '200px', marginBottom: '1rem' }} />
+    </div>
+
+    {/* 🔗 Malicious link inserter */}
+    <div style={{ marginBottom: '1rem' }}>
+      <label><strong>Insert Malicious Link:</strong></label>
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.5rem' }}>
+        <select
+          onChange={(e) => setSelectedLink(e.target.value)}
+          defaultValue=""
+          style={{ flexGrow: 1, padding: '6px' }}
+        >
+          <option value="" disabled>Select a link</option>
+          <option value="http://localhost:8000/fake_login">🔐 Fake Login Page</option>
+          <option value="http://localhost:8000/download/fake.pdf">📎 Fake PDF Download</option>
+          <option value="http://localhost:8000/update_payment">💳 Update Payment Info</option>
+          <option value="http://localhost:8000/view_message">📨 View Secure Message</option>
+        </select>
+        <button onClick={handleInsertLink} disabled={!selectedLink}>Insert</button>
+      </div>
+    </div>
+
+    {saved && <span style={{ marginLeft: '1rem', color: 'green' }}>✓ Template Saved!</span>}
+
+    <hr />
+    <h3>📧 Preview</h3>
+    <h4><strong>{subject}</strong></h4>
+    <div dangerouslySetInnerHTML={{ __html: body }} />
+
+    <button onClick={handleSave}>Save Template</button>
+  </div>
+);
+
 }
 
 export default EmailTemplateEditor;

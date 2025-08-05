@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ExampleCorp Login</title>
+  <style>
+    body { font-family: Arial; background-color: #f3f3f3; padding: 50px; }
+    .login-box {
+      background: white; padding: 20px; max-width: 400px; margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 6px;
+    }
+    input { width: 100%; margin: 10px 0; padding: 10px; }
+    button { background: #0078d7; color: white; padding: 10px; border: none; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>ExampleCorp Secure Login</h2>
+    <form method="POST" action="/track_login">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+</body>
+</html>

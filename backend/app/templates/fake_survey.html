@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Employee Feedback Survey</title>
+  <style>
+    body { font-family: Arial; padding: 40px; background-color: #fefefe; }
+    .survey { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, textarea { width: 100%; margin: 10px 0; padding: 10px; }
+    button { padding: 10px 15px; background: #28a745; color: white; border: none; }
+  </style>
+</head>
+<body>
+  <div class="survey">
+    <h2>Annual Employee Feedback Survey</h2>
+    <form method="POST" action="/track_survey">
+      <label>How satisfied are you with your job?</label>
+      <input type="text" name="satisfaction" required />
+
+      <label>Any suggestions?</label>
+      <textarea name="suggestions" rows="4"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</body>
+</html>

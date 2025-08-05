@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 import sqlite3
@@ -88,21 +88,25 @@ async def track_click(user_id: str):
     update_interaction(user_id, "clicked")
     return RedirectResponse(url=f"/fake-login?uid={user_id}")
 
-@app.get("/fake-login", response_class=HTMLResponse)
-async def fake_login_page(uid: str):
-    return f"""
-    <html>
-    <body>
-        <h2>Secure Login</h2>
-        <form action="/submit" method="post">
-            <input type="hidden" name="uid" value="{uid}" />
-            <input name="username" placeholder="Username" /><br/>
-            <input name="password" type="password" placeholder="Password" /><br/>
-            <button type="submit">Login</button>
-        </form>
-    </body>
-    </html>
-    """
+@app.get("/fake_login", response_class=HTMLResponse)
+async def serve_fake_login():
+    with open("templates/fake_login.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+@app.get("/fake_survey", response_class=HTMLResponse)
+async def serve_fake_survey():
+    with open("templates/fake_survey.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+@app.get("/fake_update", response_class=HTMLResponse)
+async def serve_fake_update():
+    with open("templates/fake_update.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+@app.get("/fake_download", response_class=HTMLResponse)
+async def serve_fake_download():
+    with open("templates/fake_download.html", "r", encoding="utf-8") as f:
+        return f.read()
 
 @app.post("/submit")
 async def handle_form(uid: str = Form(...), username: str = Form(...), password: str = Form(...)):
@@ -110,6 +114,24 @@ async def handle_form(uid: str = Form(...), username: str = Form(...), password:
     # Log credentials — ethically simulate, don't use real data in production!
     print(f"[!] {uid} submitted: {username} / {password}")
     return {"message": "Thank you. You may now close this window."}
+
+@app.get("/tracking_data")
+def get_tracking_data():
+    conn = sqlite3.connect("phishing.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM interactions")  # Make sure this table exists
+    rows = cursor.fetchall()
+    conn.close()
+
+    result = [
+        {
+            "user_id": row[0],
+            "event": row[1],
+            "timestamp": row[2]
+        }
+        for row in rows
+    ]
+    return JSONResponse(content=result)
 
 # === DB HELPERS ===
 
