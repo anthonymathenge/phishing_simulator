@@ -3,9 +3,9 @@ import ReactQuill from 'react-quill';
 
 const maliciousLinks = {
   "Fake Login Page": "http://localhost:8000/fake_login",
-  "Download Fake PDF": "http://localhost:8000/download/fake.pdf",
-  "Update Payment Info": "http://localhost:8000/update_payment",
-  "View Secure Message": "http://localhost:8000/view_message",
+  "Download Fake PDF": "http://localhost:8000/fake_download",
+  "Update Payment Info": "http://localhost:8000/fake_update",
+  "View fake survey": "http://localhost:8000/fake_survey",
 };
 
 function EmailTemplateEditor({ onTemplateUpdate }) {
@@ -85,9 +85,9 @@ function EmailTemplateEditor({ onTemplateUpdate }) {
         >
           <option value="" disabled>Select a link</option>
           <option value="http://localhost:8000/fake_login">🔐 Fake Login Page</option>
-          <option value="http://localhost:8000/download/fake.pdf">📎 Fake PDF Download</option>
-          <option value="http://localhost:8000/update_payment">💳 Update Payment Info</option>
-          <option value="http://localhost:8000/view_message">📨 View Secure Message</option>
+          <option value="http://localhost:8000/fake_download">📎 Fake PDF Download</option>
+          <option value="http://localhost:8000/fake_update">💳 Update Payment Info</option>
+          <option value="http://localhost:8000/fake_survey">📨 View Secure Message</option>
         </select>
         <button onClick={handleInsertLink} disabled={!selectedLink}>Insert</button>
       </div>

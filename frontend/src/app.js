@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BulkEmailSender from './BulkEmailSender';
 import EmailTemplateEditor from './EmailTemplateEditor';
 import TrackingDashboard from './TrackingDashboard';
+import CapturedDataDashboard from './CapturedDataDashboard';
 
 function App() {
   const [status, setStatus] = useState('');
@@ -49,7 +50,7 @@ function App() {
       <div className="App">
         <h1>Simulation Panel</h1>
         <nav>
-          <Link to="/">🏠 Home</Link> | <Link to="/tracking">📊 View Tracking</Link>
+          <Link to="/">🏠 Home</Link> | <Link to="/tracking">📊 View Tracking</Link> | <Link to = "/CapturedDataDashboard"> View Captured Data</Link>
         </nav>
         <Routes>
           <Route
@@ -63,6 +64,7 @@ function App() {
             }
           />
           <Route path="/tracking" element={<TrackingDashboard />} />
+          <Route path="/CapturedDataDashboard" element={<CapturedDataDashboard />} />
         </Routes>
       </div>
     </Router>
